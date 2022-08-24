@@ -1,0 +1,69 @@
+#include <stdio.h>
+
+int fun() {
+	printf("Please enter 10 values to add their sum:\n");
+	int val, sum=0;
+	for (int i = 0; i <= 9; i++) {
+		scanf_s("%d", &val);
+		sum += val;
+	}
+	printf("Sum of 10 values is %d", sum);
+	return 1;
+}
+
+#include <stdio.h>
+#include <math.h>
+
+int fun() {
+	float vals[2];
+	int operation;
+	float result;
+
+	printf("Please enter 2 values to perform calculations with:\n");
+	
+	for (int i = 0; i < 2; i++) {
+		scanf_s("%f", &vals[i]);
+	}
+
+	printf("Please enter operation to perform on values:\n 1. add\n 2. subtract\n 3. multiply\n 4. divide\n 5. raise first value to power of second value\n ");
+	scanf_s("%d", &operation);
+
+	switch (operation) {
+		case 1:
+			result = vals[0] + vals[1];
+			printf("Sum is %f", result);
+		break;
+		case 2:
+			result = vals[1] - vals[0];
+			printf("Difference is %f", result);
+		break;
+		case 3:
+			result = vals[0] * vals[1];
+			printf("Product is %f", result);
+		break;
+		case 4:
+			if (vals[0] != 0) {
+				result = vals[1] / vals[0];
+				printf("Quotient is %f", result);
+			}
+			else {
+				printf("Error dividing by 0");
+			}
+		break;
+		case 5:
+			result = pow(vals[0], vals[1]);
+			printf("Result is %0.2f", result);
+		break;
+		default:
+			printf("Invalid operation");
+	}
+	return 1;
+}
+
+#include <stdio.h>
+
+int main() {
+	char info[10][10] = { {"Tom", "8141234567"}, {"Bill",}, "Bob", "Karen", "Jim", "Sharon", "Helen", "Jerry", "Jeff", "Toby" } {, 8142345678, 8143456789, 8144567890, };
+
+	return 1;
+}
