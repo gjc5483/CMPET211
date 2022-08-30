@@ -63,16 +63,47 @@ int fun() {
 #include <stdio.h>
 
 int main() {
-	char data[20][100] = {"Tom", "Bill", "Bob", "Karen", "Jim", "Sharon", "Helen", "Jerry", "Jeff", "Toby", "123456789", "2345678900", "3456789000", "4567890000", "5678900000", "0987654321", "9876543211", "8765432111", "7654321111", "6543211111"};
-	char userInput[2][100];
+	char names[10][100] = {"Tom", "Bill", "Bob", "Karen", "Jim", "Sharon", "Helen", "Jerry", "Jeff", "Toby"};
+	char phones[10][100] = {"1234567890", "2345678900", "3456789000", "4567890000", "5678900000", "0987654321", "9876543211", "8765432111", "7654321111", "6543211111"};
+	char phoneSearch[100];
+	char nameSearch[100];
+	int nameFound = 0, phoneFound = 0;
+	int count = 0;
 
-	printf_s("Please enter name to search");
-	scanf_s("%s[^\n]", userInput[0], 100);
-	printf_s("Please enter phone number to search");
-	scanf_s("%s[^\n]", userInput[1], 100);
+	printf_s("Please enter name to search: ");
+	scanf_s("%s[^\n]", nameSearch, 100);
+	printf_s("Please enter phone number to search: ");
+	scanf_s("%s[^\n]", phoneSearch, 100);
 
-	for (int i = 0; i < 20; i++) {
-		for(int j=0; j<)
+	for (int i = 0; i < 10; i++) {
+		//printf_s("Name: %s\n", data[i]);
+		//printf_s("Name: %s\n", nameSearch);
+		/*for (int j = 0; j < 100; j++) {
+			while (count < strlen(names[i])){
+				if (nameSearch[j] == names[i][j]) {
+					count++;
+				}
+				else {
+					count = 0;
+				}
+				if (phoneSearch[j] == phones[i][j]) {
+					phoneFound = 1;
+				}
+			}
+		}*/
+		nameFound = strcmp(names[i], nameSearch);
+		phoneFound = strcmp(phones[i], phoneSearch);
+		if (nameFound == 1) {
+			printf_s("Name Found.");
+		}
+		if (phoneFound == 1) {
+			printf_s("Phone Found.");
+		}
+		
+	}
+
+	if (phoneFound == 0 && nameFound == 0) {
+		printf_s("No results returned.");
 	}
 
 	return 1;
