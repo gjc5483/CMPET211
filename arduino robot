@@ -1,0 +1,123 @@
+#include <Servo.h>
+#define trig 13
+#define echo 12
+#define servo_port 10
+int duration;
+int distance;
+Servo myservo;
+#define CONTROL_PIN   3
+#define LEFT_CONTROL  8
+#define LEFT_PWM      5
+#define RIGHT_CONTROL 7
+#define RIGHT_PWM     6
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(echo, INPUT);
+  pinMode(trig, OUTPUT);
+  pinMode( CONTROL_PIN, OUTPUT );
+  pinMode( LEFT_CONTROL, OUTPUT );
+  pinMode( LEFT_PWM, OUTPUT );
+  pinMode( RIGHT_CONTROL, OUTPUT );
+  pinMode( RIGHT_PWM, OUTPUT );
+  myservo.attach(servo_port);
+  move_servo(90);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //move_servo(180);
+  //move_servo(90);
+  //move_servo(0);
+  if (checkFrontDistance() > 15){
+    stop_car();
+    delay(500);
+    move_servo(180);
+    delay(500);
+    
+    if(checkFrontDistance() > 15){
+      turn_left(100);
+      delay(250);
+      move_servo(90);
+      delay(250);
+      move_forward(150);
+    }else{
+      move_servo(0);
+      delay(500);
+      checkFrontDistance();
+      
+      if(checkFrontDistance() > 15){
+        turn_right(100);
+        delay(250);
+        move_servo(90);
+        delay(250);
+        move_forward(150);
+      }else if(checkFrontDistance() < 15){
+        stop_car();
+      }
+    }
+  }else{
+    move_forward(50);
+    //move_servo(90);
+  }
+}
+
+void move_servo( int degrees_to_move )
+{
+  myservo.write(degrees_to_move);
+}
+
+int checkFrontDistance(){
+  digitalWrite(trig, LOW);
+  delayMicroseconds(4);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  duration = pulseIn(echo, HIGH);
+  distance = duration * 10 / 292 / 2;
+  return distance;
+}
+
+void turn_left(int motor_speed){
+  digitalWrite( CONTROL_PIN, HIGH );
+  digitalWrite( LEFT_CONTROL, HIGH );
+  analogWrite( LEFT_PWM, motor_speed );
+  digitalWrite( RIGHT_CONTROL, LOW );
+  analogWrite( RIGHT_PWM, motor_speed );
+}
+
+/*turn left or right input speed of left motor, right motor, and high for forward low for backwards*/
+void turn_right(int motor_speed){
+  digitalWrite( CONTROL_PIN, HIGH );
+  digitalWrite( LEFT_CONTROL, LOW );
+  analogWrite( LEFT_PWM, motor_speed );
+  digitalWrite( RIGHT_CONTROL, HIGH );
+  analogWrite( RIGHT_PWM, motor_speed );
+}
+
+//moves robot forward input 1 motor speed 
+void move_forward(int motor_speed){
+  digitalWrite( CONTROL_PIN, HIGH );
+  digitalWrite( LEFT_CONTROL, HIGH );
+  analogWrite( LEFT_PWM, motor_speed );
+  digitalWrite( RIGHT_CONTROL, HIGH );
+  analogWrite( RIGHT_PWM, motor_speed );
+}
+
+void move_backward(int motor_speed){
+  digitalWrite( CONTROL_PIN, HIGH );
+  digitalWrite( LEFT_CONTROL, LOW );
+  analogWrite( LEFT_PWM, motor_speed );
+  digitalWrite( RIGHT_CONTROL, LOW );
+  analogWrite( RIGHT_PWM, motor_speed );
+}
+
+//stop robot from moving
+void stop_car(){
+  digitalWrite( CONTROL_PIN,LOW );
+  digitalWrite( LEFT_CONTROL, HIGH );
+  analogWrite( LEFT_PWM, 0 );
+  digitalWrite( RIGHT_CONTROL, HIGH );
+  analogWrite( RIGHT_PWM, 0 );
+}
